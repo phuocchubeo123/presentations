@@ -1,0 +1,29 @@
+\begin{tikzpicture}[
+    level distance=1.4cm,
+    every node/.style={circle,draw,minimum size=6mm},
+    level 1/.style={sibling distance=5.6cm},
+    level 2/.style={sibling distance=2.8cm},
+    level 3/.style={sibling distance=1.4cm,minimum size=5mm}
+]
+    \node {}
+        child { node {}
+            child { node {}
+                child { node {} }
+                child { node {} }
+            }
+            child { node {}
+                child { node {} }
+                child { node {} }
+            }
+        }
+        child { node {}
+            child { node {}
+                child { node {} }
+                child { node {} }
+            }
+            child { node {}
+                child { node {} }
+                child { node {} }
+            }
+        };
+\end{tikzpicture}

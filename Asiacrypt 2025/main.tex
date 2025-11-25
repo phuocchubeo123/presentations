@@ -1,0 +1,92 @@
+\documentclass[10pt]{beamer}
+
+% THEME -------------------------------------------------------
+\usetheme{metropolis}       % Modern, clean
+\usecolortheme{default}
+
+% PACKAGES ----------------------------------------------------
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage{libertine}
+\usepackage[libertine]{newtxmath}
+\usepackage[normalem]{ulem}
+
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cI}{\mathcal{I}}
+
+\newcommand{\pref}{\mathrm{pref}}
+\newcommand{\zeroone}{\ensuremath{\{0, 1\}}}
+
+% TITLE INFO --------------------------------------------------
+\title{New Framework for Structure-Aware PSI From Distributed Function Secret Sharing}
+% \subtitle{(Optional Subtitle)}
+\author{Dung Bui, Gayathri Garimella, Peihan Miao, {\color{brown} Phuoc Pham}}
+% \institute{Your Affiliation}
+\date{Asiacrypt 2025}
+
+% DOCUMENT ----------------------------------------------------
+\begin{document}
+
+% TITLE PAGE --------------------------------------------------
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\input{slides/structure_aware_psi.tex}
+\input{slides/related_works.tex}
+\input{slides/spatial_hashing.tex}
+\input{slides/results_analysis.tex}
+\input{slides/distributed_fss.tex}
+
+% SECTION 2 ---------------------------------------------------
+\begin{frame}{Critical Prefix}
+    \begin{itemize}
+        \item Each interval $\cI$ can be represented as set of \textit{critical prefixes} $\pref_{\cI}$.
+        \begin{equation*}
+            y \in \cI \quad \leftrightarrow \quad \text{exists prefix } p \prec y, p \in \pref_{\cI}
+        \end{equation*}
+    \end{itemize}
+
+    \input{critical_prefix}
+\end{frame}
+
+\begin{frame}{Trade-off in Tree Search}
+    \begin{itemize}
+        \item One way to make trade-off is by slicing the dimensions.
+    \end{itemize}
+\end{frame}
+
+\section{Analysis}
+
+\input{slides/input_assumptions.tex}
+
+\begin{frame}{Experimental Results}
+    \begin{itemize}
+        \item Only include our own results, don't need to compare with other works.
+        \item Highlight the bottleneck is still the tree search.
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Open Questions}
+    \begin{itemize}
+        \item Is there better, "flattened" tree search? The goal is to remove exponential dependency on $d$.
+    \end{itemize}
+\end{frame}
+
+% REFERENCES --------------------------------------------------
+\begin{frame}{References}
+  \footnotesize{
+    \bibliographystyle{alpha}
+    \bibliography{refs}
+  }
+\end{frame}
+
+\end{document}
