@@ -1,4 +1,4 @@
-\documentclass[10pt]{beamer}
+\documentclass[10pt, aspectratio=169]{beamer}
 
 % THEME -------------------------------------------------------
 \usetheme{metropolis}       % Modern, clean
@@ -44,24 +44,8 @@
 \input{slides/spatial_hashing.tex}
 \input{slides/results_analysis.tex}
 \input{slides/distributed_fss.tex}
-
-% SECTION 2 ---------------------------------------------------
-\begin{frame}{Critical Prefix}
-    \begin{itemize}
-        \item Each interval $\cI$ can be represented as set of \textit{critical prefixes} $\pref_{\cI}$.
-        \begin{equation*}
-            y \in \cI \quad \leftrightarrow \quad \text{exists prefix } p \prec y, p \in \pref_{\cI}
-        \end{equation*}
-    \end{itemize}
-
-    \input{critical_prefix}
-\end{frame}
-
-\begin{frame}{Trade-off in Tree Search}
-    \begin{itemize}
-        \item One way to make trade-off is by slicing the dimensions.
-    \end{itemize}
-\end{frame}
+\input{slides/critical_prefix.tex}
+\input{slides/trade_off.tex}
 
 \section{Analysis}
 
