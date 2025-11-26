@@ -83,8 +83,8 @@
         \draw[->] (oracle.east) -- (key1.west);
         \draw[->] (oracle.east) -- (key0.west);
 
-        \node at ([yshift=0pt]key1.north) {$k_1$};
-        \node at ([yshift=0pt]key0.south) {$k_0$};
+        \node at ([yshift=-5pt]key1.north) {$k_1$};
+        \node at ([yshift=5pt]key0.south) {$k_0$};
     \end{tikzpicture}
     \end{center}
 \end{frame}
@@ -93,30 +93,54 @@
     \frametitle{Function Secret Sharing in \cite{garimella2024computation}}
     \begin{itemize}
         \item Alice prepares $O(\kappa)$ FSS keys pairs with \textit{binary output} (\textit{in} / \textit{out}?) for each inequality check.
+        \visible<2>{
         \item Alice and Bob runs 1-out-of-2 OTs, for Bob to learn either $k_0^i$ or $k_1^i$ for each inequality check.
         \item If the inequality check succeeds, for any of $\kappa$ key pairs, the evaluations would be equal.
+        }
     \end{itemize}
     \begin{center}
     \begin{tikzpicture}[>=stealth,thick,node distance=0.9cm and 1.4cm,xscale=0.95]
-        \node[anchor=west] (alice) at (-1.2,2.6) {\includegraphics[height=1.6cm]{images/Alice_transparent.png}};
+        \node[anchor=west] (alice) at (-1.2,2) {\includegraphics[height=1.6cm]{images/Alice_transparent.png}};
         \node (ineq) at (0,0) {$y_1 \ge x_1 - \delta\ ?$};
 
-        % many key pairs for the single inequality check
-        \foreach \i/\y in {1/2.0,2/0.8,3/-0.4,4/-1.6}{
-            \node (k0\i) at (3,\y) {$k_0^{\i}$};
-            \node (k1\i) at (4.8,\y) {$k_1^{\i}$};
-            \draw[->] (ineq.east) -- (k0\i.west);
-            \draw[->] (ineq.east) -- (k1\i.west);
+        % hardcoded key pairs instead of loop
+        % columns for keys are closer together; OT sits to the right with arrow from midpoint
+        \node (k01) at (3.2,2.4) {$k_0^{1}$};
+        \node (k11) at (3.2,1.8) {$k_1^{1}$};
 
-            % Bob does 1-out-of-2 OT for each pair
-            \node[draw,rounded corners,fill=gray!15,inner sep=4pt] (ot\i) at (7.2,\y) {OT pick 1};
-            \draw[->] (k0\i.east) -- (ot\i.west);
-            \draw[->] (k1\i.east) -- (ot\i.west);
+        \node (k02) at (3.2,0.9) {$k_0^{2}$};
+        \node (k12) at (3.2,0.3) {$k_1^{2}$};
+
+        \node (k0dots) at (3.2,-0.5) {$\vdots$};
+
+        \node (k0k) at (3.2,-1.6) {$k_0^{\kappa}$};
+        \node (k1k) at (3.2,-2.2) {$k_1^{\kappa}$};
+
+        % wiring from inequality to keys (always visible)
+        \foreach \n in {k01,k11,k02,k12,k0k,k1k}{
+            \draw[->] (ineq.east) -- (\n.west);
         }
 
-        \node[anchor=west] (bob) at (9.2,0) {\includegraphics[height=1.4cm]{images/Bob transparent.png}};
-        \foreach \i/\y in {1/2.0,2/0.8,3/-0.4,4/-1.6}{
-            \draw[->] (ot\i.east) -- (bob.west |- ot\i);
+        \coordinate (mid1) at (3.6,2.1);
+        \coordinate (mid2) at (3.6,0.6);
+        \coordinate (midk) at (3.6,-1.9);
+
+        % OT boxes and arrows appear only on the second overlay
+        \visible<2>{
+            \node[draw,rounded corners,fill=gray!15,inner sep=4pt] (ot1) at (5.6,2.1) {OT};
+            \node[draw,rounded corners,fill=gray!15,inner sep=4pt] (ot2) at (5.6,0.6) {OT};
+            \node[draw,rounded corners,fill=gray!15,inner sep=4pt] (otk) at (5.6,-1.9) {OT};
+
+            \draw[->] (mid1) -- (ot1.west);
+            \draw[->] (mid2) -- (ot2.west);
+            \draw[->] (midk) -- (otk.west);
+        }
+
+        \node[anchor=west] (bob) at (9.2,2) {\includegraphics[height=1.4cm]{images/Bob transparent.png}};
+        \visible<2>{
+            \draw[->] (ot1.east) -- (bob.west);
+            \draw[->] (ot2.east) -- (bob.west);
+            \draw[->] (otk.east) -- (bob.west);
         }
     \end{tikzpicture}
     \end{center}
