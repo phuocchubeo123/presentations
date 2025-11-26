@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.12) (preloaded format=pdflatex 2023.1.2)  25 NOV 2025 10:37
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.12) (preloaded format=pdflatex 2023.1.2)  25 NOV 2025 11:47
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1165,10 +1165,14 @@ Overfull \vbox (10.79199pt too high) detected at line 72
 
 ] [6
 
-]) (slides/spatial_hashing.tex [7
+]) (slides/spatial_hashing.tex
+Overfull \vbox (0.84506pt too high) detected at line 52
+ []
+
+[7
 
 ]
-Overfull \vbox (0.84506pt too high) detected at line 53
+Overfull \vbox (0.84506pt too high) detected at line 52
  []
 
 [8
@@ -1344,7 +1348,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  128i,14n,122p,1936b,1241s stack positions out of 10000i,1000n,20000p,200000b,80000s
 {C:/Users/Hi/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/libertine/lbtn_76gpa5.enc}{C:/Users/Hi/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/libertine/lbtn_25tcsq.enc}{C:/Users/Hi/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/libertine/lbtn_afusau.enc}<C:/Users/Hi/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/LibertineMathMI.pfb><C:/Users/Hi/AppData/Local/Programs/MiKTeX/fonts/type1/public/libertine/LinBiolinumT.pfb><C:/Users/Hi/AppData/Local/Programs/MiKTeX/fonts/type1/public/libertine/LinBiolinumTB.pfb><C:/Users/Hi/AppData/Local/Programs/MiKTeX/fonts/type1/public/libertine/LinBiolinumTI.pfb><C:/Users/Hi/AppData/Local/Programs/MiKTeX/fonts/type1/public/libertine/LinLibertineT.pfb><C:/Users/Hi/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmss10.pfb><C:/Users/Hi/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/txmiaX.pfb><C:/Users/Hi/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/txsys.pfb>
-Output written on main.pdf (24 pages, 3292840 bytes).
+Output written on main.pdf (24 pages, 3293068 bytes).
 PDF statistics:
  261 PDF objects out of 1000 (max. 8388607)
  59 named destinations out of 1000 (max. 500000)
