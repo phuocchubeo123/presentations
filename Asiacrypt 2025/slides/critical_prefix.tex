@@ -62,12 +62,3 @@
         \draw[solid] (nRR) -- (l7);
     \end{tikzpicture}
 \end{frame}
-
-\begin{frame}
-    \frametitle{How Alice searches}
-    \begin{itemize}
-        \item Alice computes hashes of evaluations of all critical prefixes.
-        \item Bob sends Alice all hashes of all prefixes of his inputs.
-        \item Alice first checks if any critical prefix hash matches, then slowly discovering the full value bit-by-bit.
-    \end{itemize}
-\end{frame}

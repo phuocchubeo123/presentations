@@ -10,7 +10,7 @@
     \end{itemize}
 
     \centering
-    \begin{tikzpicture}[>=stealth,scale=0.6]
+    \begin{tikzpicture}[>=stealth,scale=0.5]
         % labels as images
         \node at (3,8) {\includegraphics[width=2cm]{images/Alice transparent.png}};
         \node at (13,8) {\includegraphics[width=2cm]{images/Bob transparent.png}};
@@ -24,7 +24,12 @@
             \node[below left] at (0,0) {$0$};
             \node[below] at (16*\cellsize,0) {$16$};
             \node[left] at (0,16*\cellsize) {$16$};
-            % two disjoint filled squares of edge 3
+            % Alice points (red) and intersections (purple)
+            \fill[red] (6*\cellsize,2*\cellsize) circle[radius=0.16];
+            \fill[red] (8*\cellsize,7*\cellsize) circle[radius=0.16];
+            \fill[red] (11.5*\cellsize,13.2*\cellsize) circle[radius=0.16];
+            \fill[red!60!purple] (2.5*\cellsize,3.2*\cellsize) circle[radius=0.16];
+            \fill[red!60!purple] (4.4*\cellsize,11.5*\cellsize) circle[radius=0.16];
         \end{scope}
         }
         \only<2>{
@@ -42,6 +47,12 @@
             \draw[thick,blue] (3*\cellsize,10*\cellsize) rectangle (6*\cellsize,13*\cellsize);
             \fill[green!20] (10*\cellsize,12*\cellsize) rectangle (13*\cellsize,15*\cellsize);
             \draw[thick,blue] (10*\cellsize,12*\cellsize) rectangle (13*\cellsize,15*\cellsize);
+            % Alice points (red) and intersections (purple)
+            \fill[red] (6*\cellsize,2*\cellsize) circle[radius=0.16];
+            \fill[red] (8*\cellsize,7*\cellsize) circle[radius=0.16];
+            \fill[red] (11.5*\cellsize,13.2*\cellsize) circle[radius=0.16];
+            \fill[red!60!purple] (2.5*\cellsize,3.2*\cellsize) circle[radius=0.16]; % inside first green box
+            \fill[red!60!purple] (4.4*\cellsize,11.5*\cellsize) circle[radius=0.16]; % inside second green box
         \end{scope}
         }
 
@@ -54,7 +65,12 @@
             \node[below left] at (0,0) {$0$};
             \node[below] at (16*\cellsize,0) {$16$};
             \node[left] at (0,16*\cellsize) {$16$};
-            % two disjoint filled squares of edge 3
+            % Bob points (blue) and intersections (purple)
+            \fill[blue] (1.5*\cellsize,7.5*\cellsize) circle[radius=0.16];
+            \fill[blue] (12*\cellsize,4*\cellsize) circle[radius=0.16];
+            \fill[blue] (9*\cellsize,12.5*\cellsize) circle[radius=0.16];
+            \fill[purple] (2.5*\cellsize,3.2*\cellsize) circle[radius=0.16];
+            \fill[purple] (4.4*\cellsize,11.5*\cellsize) circle[radius=0.16];
         \end{scope}
         }
         \only<2>{
@@ -65,7 +81,12 @@
             \node[below left] at (0,0) {$0$};
             \node[below] at (16*\cellsize,0) {$16$};
             \node[left] at (0,16*\cellsize) {$16$};
-            % two disjoint filled squares of edge 3
+            % Bob points (blue) and intersections (purple)
+            \fill[blue] (1.5*\cellsize,7.5*\cellsize) circle[radius=0.16];
+            \fill[blue] (12*\cellsize,4*\cellsize) circle[radius=0.16];
+            \fill[blue] (9*\cellsize,12.5*\cellsize) circle[radius=0.16];
+            \fill[purple] (2.5*\cellsize,3.2*\cellsize) circle[radius=0.16]; % intersection in first box
+            \fill[purple] (4.4*\cellsize,11.5*\cellsize) circle[radius=0.16]; % intersection in second box
         \end{scope}
         }
     \end{tikzpicture}
