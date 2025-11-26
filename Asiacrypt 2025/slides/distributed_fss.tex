@@ -5,7 +5,7 @@
             [x_1 - \delta, x_1 + \delta] \times [x_2 - \delta, x_2 + \delta] \times \ldots \times [x_n - \delta, x_n + \delta]
         \end{equation*}
 
-        \only<2>{
+        \visible<2>{
         \item We can secret share each dimension separately, then AND the results.
         \begin{equation*}
             y_1 \ge x_1 - \delta \quad \wedge \quad y_1 \le x_1 + \delta \quad \wedge \quad \ldots \quad \wedge \quad y_d \ge x_d - \delta \quad \wedge \quad y_d \le x_d + \delta
@@ -14,7 +14,8 @@
 
     \end{itemize}
 
-    \begin{tikzpicture}[scale=0.7]
+    \centering
+    \begin{tikzpicture}[scale=0.4]
         % light grid
         \draw[step=0.5cm,gray!30,very thin] (0, 0) grid (7, 7);
     
@@ -30,7 +31,7 @@
         % \filldraw[blue] (5,6) circle (2pt);
     
         % small planes on the right (2x2)
-        \only<2>{
+        \visible<2>{
         \begin{scope}[xshift=8.5cm,yshift=4cm,scale=0.35]
             \draw[step=0.5cm,gray!30,very thin] (0, 0) grid (7, 7);
             \draw[->,thick] (0,0) -- (7,0) node[right] {};
@@ -91,27 +92,53 @@
 \begin{frame}
     \frametitle{Function Secret Sharing in \cite{garimella2024computation}}
     \begin{itemize}
-        \item Alice prepares $O(\kappa)$ FSS keys pairs with \textit{binary output} (\textit{in} / \textit{out}?) for each dimension.
+        \item Alice prepares $O(\kappa)$ FSS keys pairs with \textit{binary output} (\textit{in} / \textit{out}?) for each inequality check.
+        \item Alice and Bob runs 1-out-of-2 OTs, for Bob to learn either $k_0^i$ or $k_1^i$ for each inequality check.
+        \item If the inequality check succeeds, for any of $\kappa$ key pairs, the evaluations would be equal.
     \end{itemize}
     \begin{center}
-    \begin{tikzpicture}[>=stealth,thick,node distance=0.8cm and 1.1cm,xscale=0.9]
-        \node[anchor=north west] (alice) at (-0.5,2.6) {\includegraphics[height=1.6cm]{images/Alice_transparent.png}};
+    \begin{tikzpicture}[>=stealth,thick,node distance=0.9cm and 1.4cm,xscale=0.95]
+        \node[anchor=west] (alice) at (-1.2,2.6) {\includegraphics[height=1.6cm]{images/Alice_transparent.png}};
+        \node (ineq) at (0,0) {$y_1 \ge x_1 - \delta\ ?$};
 
-        \node (t1) at (0,0) {$y_1 \ge x_1 - \delta$};
-        \node (t2) [right=1.4cm of t1] {$y_1 \le x_1 + \delta$};
-        \node (dots) [right=1.0cm of t2] {$\cdots$};
-        \node (td) [right=1.0cm of dots] {$y_d \le x_d + \delta$};
+        % many key pairs for the single inequality check
+        \foreach \i/\y in {1/2.0,2/0.8,3/-0.4,4/-1.6}{
+            \node (k0\i) at (3,\y) {$k_0^{\i}$};
+            \node (k1\i) at (4.8,\y) {$k_1^{\i}$};
+            \draw[->] (ineq.east) -- (k0\i.west);
+            \draw[->] (ineq.east) -- (k1\i.west);
 
-        \foreach \i/\src in {1/t1,2/t2,3/td} {
-            \node (k0\i) [below left=0.7cm and 0.2cm of \src] {$k_0^{\i}$};
-            \node (k1\i) [below right=0.7cm and 0.2cm of \src] {$k_1^{\i}$};
-            \draw[->] (\src.south west) -- (k0\i.north);
-            \draw[->] (\src.south east) -- (k1\i.north);
+            % Bob does 1-out-of-2 OT for each pair
+            \node[draw,rounded corners,fill=gray!15,inner sep=4pt] (ot\i) at (7.2,\y) {OT pick 1};
+            \draw[->] (k0\i.east) -- (ot\i.west);
+            \draw[->] (k1\i.east) -- (ot\i.west);
+        }
+
+        \node[anchor=west] (bob) at (9.2,0) {\includegraphics[height=1.4cm]{images/Bob transparent.png}};
+        \foreach \i/\y in {1/2.0,2/0.8,3/-0.4,4/-1.6}{
+            \draw[->] (ot\i.east) -- (bob.west |- ot\i);
         }
     \end{tikzpicture}
     \end{center}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Why do we need $\kappa$ key pair?}
+    \frametitle{Can we use only one key pair?}
+    \begin{itemize}
+        \item Alice can prepare only one FSS key pair for each inequality check, with \textit{longer payload}.
+        \item This will also avoid dictionary attack from Bob. 
+        \item However, Alice can prepare malicious payload, which is undesirable.
+        \item Nonetheless, the key size for one inequality check is improved:
+    \end{itemize}
+    \begin{center}
+    \begin{tikzpicture}[>=stealth,thick]
+        \node (eqtop) at (0,0) {$O(\kappa \cdot u \cdot (\kappa + 1))$};
+        \node (eqbottom) at (0,-1.6) {$O(u \cdot (\kappa + \kappa))$};
+        \draw[->] (eqtop) -- (eqbottom);
+    \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Distributed DCF}
 \end{frame}

@@ -5,7 +5,7 @@
         \item All related works (including ours) use tree-searching technique to find matching elements.
         \item Total sender communication - receiver computation cost is $O(u^d)$. \tikz[remember picture] \coordinate (complexity);
     \end{itemize}
-    \only<2>{
+    \visible<2>{
     \begin{tikzpicture}[remember picture,overlay]
         \node[align=center] (comment) at ([xshift=-0.3cm, yshift=-1cm]complexity.south) {\scriptsize all possible prefix combinations!};
         \draw[->,thick] (comment.north) -- ([xshift=-0.5cm, yshift=-2pt]complexity.south);
