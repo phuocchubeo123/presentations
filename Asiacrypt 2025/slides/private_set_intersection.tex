@@ -1,0 +1,79 @@
+\begin{frame}
+    \frametitle{Private Set Intersection}
+    \begin{quote}
+        \itshape "You know ... Life is complex. Sometimes, you might be friends with folks who don't like each other. It's cool that you keep them private :)" \\[0.5ex]
+        \hfill --- My friend in the Math department at the gym
+    \end{quote}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Example: Alice vs. Bob (private sets)}
+    \begin{columns}[T,totalwidth=\textwidth]
+        \begin{column}{0.48\textwidth}
+            \centering
+            \includegraphics[height=2cm]{images/Alice_transparent.png}\\[0.7ex]
+            {\setbeamercolor{alicebox}{bg=blue!12,fg=black}
+            \begin{beamercolorbox}[rounded=true,wd=\linewidth,sep=6pt]{alicebox}
+                \begin{tabular}{@{}l@{}}
+                    XAE-264\\
+                    Nova-Prime\\
+                    Lyra\\
+                    Axiom-77\\
+                    Helix-3\\
+                    Astra\\
+                \end{tabular}
+            \end{beamercolorbox}}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \centering
+            \includegraphics[height=2cm]{images/bob_transparent.png}\\[0.7ex]
+            {\setbeamercolor{bobbox}{bg=orange!12,fg=black}
+            \begin{beamercolorbox}[rounded=true,wd=\linewidth,sep=6pt]{bobbox}
+                \begin{tabular}{@{}l@{}}
+                    Lyra\\
+                    Zeta-9\\
+                    XAE-264\\
+                    Quanta-5\\
+                    Orion-Delta\\
+                    Vega-S\\
+                \end{tabular}
+            \end{beamercolorbox}}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Intersection Highlighted}
+    \begin{columns}[T,totalwidth=\textwidth]
+        \begin{column}{0.48\textwidth}
+            \centering
+            \includegraphics[height=2cm]{images/Alice_transparent.png}\\[0.7ex]
+            {\setbeamercolor{alicebox}{bg=blue!12,fg=black}
+            \begin{beamercolorbox}[rounded=true,wd=\linewidth,sep=6pt]{alicebox}
+                \begin{tabular}{@{}l@{}}
+                    \textbf{XAE-264}\\
+                    Nova-Prime\\
+                    \textbf{Lyra}\\
+                    Axiom-77\\
+                    Helix-3\\
+                    Astra\\
+                \end{tabular}
+            \end{beamercolorbox}}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \centering
+            \includegraphics[height=2cm]{images/bob_transparent.png}\\[0.7ex]
+            {\setbeamercolor{bobbox}{bg=orange!12,fg=black}
+            \begin{beamercolorbox}[rounded=true,wd=\linewidth,sep=6pt]{bobbox}
+                \begin{tabular}{@{}l@{}}
+                    \textbf{Lyra}\\
+                    Zeta-9\\
+                    \textbf{XAE-264}\\
+                    Quanta-5\\
+                    Orion-Delta\\
+                    Vega-S\\
+                \end{tabular}
+            \end{beamercolorbox}}
+        \end{column}
+    \end{columns}
+\end{frame}
