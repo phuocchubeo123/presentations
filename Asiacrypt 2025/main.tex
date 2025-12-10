@@ -194,12 +194,13 @@ Private Set Intersection \cite{meadows1986more,freedman2004efficient} outputs {\
   \begin{column}{0.58\textwidth}
     \centering
     \begin{tikzpicture}
-      \node[anchor=center] (imgbase) at (0,0)
-        {\includegraphics[width=0.98\linewidth]{contact-discovery.png}};
-      \node[anchor=center, rotate=2] at ([xshift=0.8cm,yshift=1.4cm]imgbase)
+      \node[anchor=center] (imgbase) at (0,5) {};
+      \node[anchor=center, rotate=2] at ([xshift=0.8cm,yshift=0.7cm]imgbase)
         {\includegraphics[width=0.85\linewidth]{password-monitoring.png}};
-      \node[anchor=center, rotate=-3] at ([xshift=-0.6cm,yshift=-0.3cm]imgbase)
+      \node[anchor=center, rotate=-3] at ([xshift=1cm,yshift=-0.3cm]imgbase)
         {\includegraphics[width=0.73\linewidth]{inventory-matching.png}};
+      \node[anchor=center] at ([yshift=-2cm]imgbase)
+        {\includegraphics[width=0.98\linewidth]{contact-discovery.png}};
     \end{tikzpicture}
   \end{column}
 \end{columns}
@@ -211,7 +212,7 @@ Private Set Intersection \cite{meadows1986more,freedman2004efficient} outputs {\
   Sometimes output requires {\color{darkgreen} close enough} elements, instead of {\color{red} exactly matched}.
 }
 \only<3>{
-  Putting {\color{red} every points} and run plain PSI is too costly!
+  Putting {\color{red} every points} and running plain PSI is too costly!
 }
 \vspace{15em}
 \begin{tikzpicture}[overlay, remember picture]
@@ -452,6 +453,12 @@ Alice is the receiver.
     \item Computationally efficient: \cite{garimella2024computation}.
     \item \textbf{This work}: Concrete efficiency and implementation!
 \end{itemize}
+\textbf{Fuzzy Private Set Intersection}: Techniques based on:
+\begin{itemize}
+    \item GC or FHE: \cite{richardson2024fuzzy, son2025doubly, uzun2021fuzzy}.
+    \item Additive Homomorphic Encryption: \cite{van2024fuzzy, gao2024efficient}.
+    \item Symmetric Key Techniques: \cite{zhang2025fast}, \cite{van2025fuzzy}.
+\end{itemize}
 \end{frame}
 
 \newcolumntype{L}{>{\hspace{1em}}l}
@@ -540,7 +547,7 @@ We consider 1-dimension, 1-sided interval.
 \draw[very thick, green!70!black, ->] (5,-1.1) -- (5,-0.4);
 \node at (5,-1.3) {$\alpha$};
 \node at (-0.2, -0.2) {$0$};
-\node at (8.2, -0.2) {$2^u$};
+\node at (8.2, -0.2) {$2^u-1$};
 
 \visible<2,3,4>{
 \node at (4, 2) {1. Oblivious Transfer};
@@ -798,11 +805,11 @@ Prior works \cite{garimella2022structure,garimella2024computation} follow the fr
     % Instance 1 (top)
       \node (key0A) at ([xshift=2cm,yshift=2.9cm] aliceimg.east) 
         {\includegraphics[width=0.07\linewidth]{../Resources/redkey_mirror.png}};
-      \node at ([xshift=0.15cm,yshift=0.15cm] key0A.south) {$0$};
+      \node at ([xshift=0.15cm,yshift=0.15cm] key0A.south) {$\textcolor{red}{0}$};
 
       \node (key1A) at ([xshift=2.8cm,yshift=2.9cm] aliceimg.east) 
         {\includegraphics[width=0.07\linewidth]{../Resources/redkey_mirror.png}};
-      \node at ([xshift=0.15cm,yshift=0.15cm] key1A.south) {$1$};
+      \node at ([xshift=0.15cm,yshift=0.15cm] key1A.south) {$\textcolor{red}{1}$};
     \draw[->, thick]
       ([yshift=2.2cm] aliceimg.east) to[out=10,in=170] ([xshift=4.3cm, yshift=2.2cm] aliceimg.east);
     \node (oracleA) 
@@ -822,11 +829,11 @@ Prior works \cite{garimella2022structure,garimella2024computation} follow the fr
     % Instance 2 (middle)
       \node (key0B) at ([xshift=2cm,yshift=1.5cm] aliceimg.east) 
         {\includegraphics[width=0.07\linewidth]{../Resources/bluekey_mirror.png}};
-      \node at ([xshift=0.15cm,yshift=0.15cm] key0B.south) {$0$};
+      \node at ([xshift=0.15cm,yshift=0.15cm] key0B.south) {$\textcolor{blue}{0}$};
 
       \node (key1B) at ([xshift=2.8cm,yshift=1.5cm] aliceimg.east) 
         {\includegraphics[width=0.07\linewidth]{../Resources/bluekey_mirror.png}};
-      \node at ([xshift=0.15cm,yshift=0.15cm] key1B.south) {$1$};
+      \node at ([xshift=0.15cm,yshift=0.15cm] key1B.south) {$\textcolor{blue}{1}$};
     \draw[->, thick]
       ([yshift=0.8cm] aliceimg.east) to[out=10,in=170] ([xshift=4.3cm, yshift=0.8cm] aliceimg.east);
     \node (oracleB) 
@@ -875,6 +882,26 @@ Prior works \cite{garimella2022structure,garimella2024computation} follow the fr
 \begin{frame}
 \frametitle{Finding the intersection}
 \begin{tikzpicture}[overlay, remember picture]
+
+  \only<1>{
+  \node at ([xshift=-3.7cm, yshift=-1cm] current page.north east) { \shortstack[r]{
+  Bob sends {\color{teal} hash of concatenations} for Evals \\
+  with his {\color{purple} chosen} keys.
+  }}
+  };
+  \only<2,3>{
+  \node at ([xshift=-3.7cm, yshift=-1cm] current page.north east) { \shortstack[r]{
+  For each point, Alice compute hash of Evals \\
+  with her {\color{purple} first} keys only.
+  }}
+  };
+  \only<4>{
+  \node at ([xshift=-3.7cm, yshift=-1cm] current page.north east) { \shortstack[r]{
+  If $x$ is {\color{teal} inside} the interval, two hashes are {\color{teal} equal} \\
+  {\color{purple} no matter what keys} Bob chose.
+  }}
+  };
+
   \definecolor{mygreen}{RGB}{0,150,0}
   % --- Alice image (same position as previous slide) ---
   \node[anchor=center, xshift=-6cm, yshift=-2cm]
@@ -892,17 +919,17 @@ Prior works \cite{garimella2022structure,garimella2024computation} follow the fr
     % Three colored keys (red, blue, black) with ellipsis
     \node at ([xshift=-0.8cm, yshift=0.5cm] bobimg.north)
       {\includegraphics[width=0.07\linewidth]{../Resources/redkey_mirror.png}};
-    \node at ([xshift=-0.8cm, yshift=0.3cm] bobimg.north) {{\scriptsize \textcolor{red}{$b_1$}}};
+    \node at ([xshift=-0.7cm, yshift=0.3cm] bobimg.north) {{\scriptsize \textcolor{red}{$b_1$}}};
 
     \node at ([xshift=0cm, yshift=0.5cm] bobimg.north)
       {\includegraphics[width=0.07\linewidth]{../Resources/bluekey_mirror.png}};
-    \node at ([xshift=0cm, yshift=0.3cm] bobimg.north) {{\scriptsize \textcolor{blue}{$b_2$}}};
+    \node at ([xshift=0.1cm, yshift=0.3cm] bobimg.north) {{\scriptsize \textcolor{blue}{$b_2$}}};
 
-  \node at ([xshift=0.45cm, yshift=0.5cm] bobimg.north) {$\cdots$};
+  \node at ([xshift=0.5cm, yshift=0.5cm] bobimg.north) {$\cdots$};
 
   \node at ([xshift=1.0cm, yshift=0.5cm] bobimg.north)
     {\includegraphics[width=0.07\linewidth]{../Resources/blackkey_mirror.png}};
-  \node at ([xshift=1.0cm, yshift=0.3cm] bobimg.north) {{\scriptsize \textcolor{black}{$b_3$}}};
+  \node at ([xshift=1.1cm, yshift=0.3cm] bobimg.north) {{\scriptsize \textcolor{black}{$b_\kappa$}}};
 
   % --- Arrow from Bob to Alice with hash of evaluations ---
   \draw[->, thick, mygreen]
@@ -923,12 +950,12 @@ Prior works \cite{garimella2022structure,garimella2024computation} follow the fr
 
     % --- Hash labels and arrows from interval ---
     \visible<2,3,4>{
-    \node[anchor=west] (hashTop) at ([xshift=3.5cm,yshift=-1.9cm] current page.north west) {$H({\tt FSS.Eval}_0(0), \ldots, {\tt FSS.Eval}_0(0))$};
+    \node[anchor=west] (hashTop) at ([xshift=3.5cm,yshift=-1.9cm] current page.north west) {$H(\textcolor{red}{{\tt FSS.Eval}_0}(0), \ldots, {\tt FSS.Eval}_0(0))$};
     \draw[->, thick, mygreen]
       ([xshift=1.7cm,yshift=-1.9cm] current page.north west) to ([xshift=3.6cm,yshift=-1.9cm] current page.north west);
     }
     \visible<3,4>{
-    \node[anchor=west] (hashTop2) at ([xshift=3.5cm,yshift=-2.4cm] current page.north west) {$H({\tt FSS.Eval}_0(1), \ldots, {\tt FSS.Eval}_0(1))$};
+    \node[anchor=west] (hashTop2) at ([xshift=3.5cm,yshift=-2.4cm] current page.north west) {$H(\textcolor{red}{{\tt FSS.Eval}_0}(1), \ldots, {\tt FSS.Eval}_0(1))$};
     % point lower on the black segment for value 2
     \coordinate (ptTwo) at ($(lineTop)!0.7!(lineBottom)$);
     \draw[->, thick, mygreen]
@@ -939,6 +966,15 @@ Prior works \cite{garimella2022structure,garimella2024computation} follow the fr
     \visible<2>{
       \draw[->, thick, mygreen, bend left=10]
         ([xshift=0.1cm,yshift=0.1cm]hashTop2.east) to node[midway, xshift=0.8cm,yshift=0.25cm] {\scriptsize Check} ([xshift=-0.3cm]hashBob.north);
+    }
+
+    \visible<4>{
+      \node at ([yshift=-0.2cm] hashTop2.south) {$\vdots$};
+    \node[anchor=west] (hashTop2) at ([xshift=3.5cm,yshift=-3.8cm] current page.north west) {$H(\textcolor{red}{{\tt FSS.Eval}_0}(x), \ldots, {\tt FSS.Eval}_0(x))$};
+    % point lower on the black segment for value 2
+    \coordinate (ptTwo) at ($(lineTop)!0.7!(lineBottom)$);
+    \draw[->, thick, mygreen]
+      ([xshift=1.7cm,yshift=-3.8cm] current page.north west) to ([xshift=3.6cm,yshift=-3.8cm] current page.north west);
     }
 
 \end{tikzpicture}
@@ -1097,6 +1133,140 @@ Distributed Function Secret Sharing functionality delivers correlated keys for t
 \end{frame}
 
 \begin{frame}
+\frametitle{Cost has changed}
+From {\color{orange} $\kappa$} FSS key generations to {\color{teal} $1$} distributed FSS.
+\vspace{15em}
+\begin{tikzpicture}[overlay, remember picture]
+\definecolor{mygreen}{RGB}{0,150,0}
+\definecolor{mypurple}{RGB}{150,60,180}
+
+  % --- Alice image ---
+\node[anchor=center, xshift=-6cm, yshift=-2cm]
+    (aliceimg)
+    at (current page.center)
+    {\includegraphics[width=0.13\linewidth]{../Resources/Alice.png}};
+
+% --- Bob image ---
+\node[anchor=center, xshift=6cm, yshift=-2cm]
+    (bobimg)
+    at (current page.center)
+    {\includegraphics[width=0.13\linewidth]{../Resources/Bob.png}};
+
+%% --- Axis line ---
+\draw[-, thick] ([xshift=-1cm, yshift=-0.5cm] aliceimg.south) -- ([xshift=2.5cm, yshift=-0.5cm] aliceimg.south);
+
+%% --- Red interval (Alice interval) ---
+\draw[line width=3pt, red!60, rounded corners=3pt] ([xshift=-1cm, yshift=-0.53cm] aliceimg.south) -- ([xshift=1.3cm, yshift=-0.53cm] aliceimg.south);
+
+\only<1>{
+\node (key0A) at ([xshift=2cm,yshift=2.9cm] aliceimg.east) 
+  {\includegraphics[width=0.07\linewidth]{../Resources/redkey_mirror.png}};
+\node at ([xshift=0.15cm,yshift=0.15cm] key0A.south) {$\textcolor{red}{0}$};
+
+\node (key1A) at ([xshift=2.8cm,yshift=2.9cm] aliceimg.east) 
+  {\includegraphics[width=0.07\linewidth]{../Resources/redkey_mirror.png}};
+\node at ([xshift=0.15cm,yshift=0.15cm] key1A.south) {$\textcolor{red}{1}$};\draw[->, thick]
+([yshift=2.2cm] aliceimg.east) to[out=10,in=170] ([xshift=4.3cm, yshift=2.2cm] aliceimg.east);\node (oracleA) 
+  at ([yshift=2.2cm, xshift=4.9cm] aliceimg.east)
+  {\includegraphics[width=0.2\linewidth]{../Resources/Oracle.png}};\draw[->, thick]
+([yshift=2.2cm] bobimg.west) to[out=170,in=10] ([xshift=-4cm, yshift=2.2cm] bobimg.west);
+\node at ([yshift=2.7cm,xshift=-2.1cm] bobimg.west) {$\textcolor{red}{b_1} \gets \$$};
+\draw[<-, thick]
+  ([yshift=2.1cm] bobimg.west) to[out=-170,in=-10] ([xshift=-4cm, yshift=2.1cm] bobimg.west);
+\node (keybA) at ([yshift=1.7cm,xshift=-0.3cm] bobimg.west)
+  {\includegraphics[width=0.07\linewidth]{../Resources/redkey_mirror.png}};
+\node at ([xshift=0.15cm,yshift=0.15cm] keybA.south) {{\color{red} $b_1$}};
+
+% Instance 2 (middle)
+  \node (key0B) at ([xshift=2cm,yshift=1.5cm] aliceimg.east) 
+    {\includegraphics[width=0.07\linewidth]{../Resources/bluekey_mirror.png}};
+  \node at ([xshift=0.15cm,yshift=0.15cm] key0B.south) {$\textcolor{blue}{0}$};
+
+  \node (key1B) at ([xshift=2.8cm,yshift=1.5cm] aliceimg.east) 
+    {\includegraphics[width=0.07\linewidth]{../Resources/bluekey_mirror.png}};
+  \node at ([xshift=0.15cm,yshift=0.15cm] key1B.south) {$\textcolor{blue}{1}$};
+\draw[->, thick]
+  ([yshift=0.8cm] aliceimg.east) to[out=10,in=170] ([xshift=4.3cm, yshift=0.8cm] aliceimg.east);
+\node (oracleB) 
+    at ([yshift=0.8cm, xshift=4.9cm] aliceimg.east)
+    {\includegraphics[width=0.2\linewidth]{../Resources/Oracle.png}};
+\draw[->, thick]
+  ([yshift=0.8cm] bobimg.west) to[out=170,in=10] ([xshift=-4cm, yshift=0.8cm] bobimg.west);
+\node at ([yshift=1.3cm,xshift=-2.1cm] bobimg.west) {$\textcolor{blue}{b_2} \gets \$$};
+\draw[<-, thick]
+  ([yshift=0.7cm] bobimg.west) to[out=-170,in=-10] ([xshift=-4cm, yshift=0.7cm] bobimg.west);
+\node (keybB) at ([yshift=0.3cm,xshift=-0.3cm] bobimg.west)
+  {\includegraphics[width=0.07\linewidth]{../Resources/bluekey_mirror.png}};
+\node at ([xshift=0.15cm,yshift=0.15cm] keybB.south) {{\color{blue} $b_2$}};
+
+% Dots separating second and third
+  \node at ([yshift=-0.3cm, xshift=4.9cm] aliceimg.east) {$\vdots$};
+  \node at ([yshift=-0.3cm, xshift=5.7cm] aliceimg.east) {{\scriptsize $\kappa$ times}};
+
+% Instance 3 (bottom)
+  \node (key0C) at ([xshift=2cm,yshift=-0.2cm] aliceimg.east) 
+    {\includegraphics[width=0.07\linewidth]{../Resources/blackkey_mirror.png}};
+  \node at ([xshift=0.15cm,yshift=0.15cm] key0C.south) {$0$};
+
+  \node (key1C) at ([xshift=2.8cm,yshift=-0.2cm] aliceimg.east) 
+    {\includegraphics[width=0.07\linewidth]{../Resources/blackkey_mirror.png}};
+\node at ([xshift=0.15cm,yshift=0.15cm] key1C.south) {$1$};
+\draw[->, thick]
+  ([yshift=-0.9cm] aliceimg.east) to[out=10,in=170] ([xshift=4.3cm, yshift=-0.9cm] aliceimg.east);
+\node (oracleC) 
+    at ([yshift=-0.9cm, xshift=4.9cm] aliceimg.east)
+    {\includegraphics[width=0.2\linewidth]{../Resources/Oracle.png}};
+\draw[->, thick]
+  ([yshift=-0.9cm] bobimg.west) to[out=170,in=10] ([xshift=-4cm, yshift=-0.9cm] bobimg.west);
+  \node at ([yshift=-0.4cm,xshift=-2.1cm] bobimg.west) {$\textcolor{black}{b_\kappa} \gets \$$};
+  \draw[<-, thick]
+    ([yshift=-1.0cm] bobimg.west) to[out=-170,in=-10] ([xshift=-4cm, yshift=-1.0cm] bobimg.west);
+  \node (keybC) at ([yshift=-1.4cm,xshift=-0.3cm] bobimg.west)
+    {\includegraphics[width=0.07\linewidth]{../Resources/blackkey_mirror.png}};
+\node at ([xshift=0.15cm,yshift=0.15cm] keybC.south) {{\color{black} $b_\kappa$}};
+}
+
+\only<2>{
+% --- Oracle image ---
+\node[anchor=center, xshift=0.3cm, yshift=-2cm]
+    (oracleimg)
+    at (current page.center)
+    {\includegraphics[width=0.4\linewidth]{../Resources/Oracle.png}};
+
+% --- Arrows + labels -----------------------------------------
+\draw[->, thick, mygreen]
+  ([yshift=0.5cm] aliceimg.east) to[out=30,in=150] ([xshift=2.8cm, yshift=0.5cm] aliceimg.east);
+\node[text=mypurple] at ([xshift=1.3cm,yshift=0.65cm] aliceimg.east) {{\scriptsize interval}};
+\node at ([xshift=1.3cm,yshift=1.03cm] aliceimg.east) {{\scriptsize $\alpha$}};
+
+\draw[->, thick, mygreen]
+  ([yshift=0.5cm] bobimg.west) to[out=150,in=30] ([xshift=-2.6cm, yshift=0.5cm] bobimg.west);
+\node[text=mypurple] at ([xshift=-1.3cm,yshift=0.65cm] bobimg.west) {{\scriptsize payload}};
+\node at ([xshift=-1.3cm,yshift=1.03cm] bobimg.west) {{\scriptsize $\beta \in \{0, 1\}^\kappa$}};
+
+\node[text width=3.5cm, align=right] (entropyNote) at ([xshift=0.2cm,yshift=3.0cm] bobimg.west) {{\scriptsize Entropies of choice bits $b_1, \ldots, b_\kappa$ moved here}};
+\draw[->, thick, mygreen]
+  (entropyNote.south) to[out=-10,in=150] ([xshift=-1.3cm,yshift=1.23cm] bobimg.west);
+
+% Output arrows
+\draw[<-, thick, mygreen]
+  ([yshift=-0.5cm] aliceimg.east) to[out=-30,in=-150] ([xshift=2.8cm, yshift=-0.5cm] aliceimg.east);
+\node at ([xshift=1.3cm,yshift=-1.15cm] aliceimg.east)
+  {\includegraphics[width=0.07\linewidth]{../Resources/Key_mirrored.png}};
+\node at ([xshift=1.55cm,yshift=-1.4cm] aliceimg.east) {{\scriptsize $0$}};
+
+\draw[<-, thick, mygreen]
+  ([yshift=-0.5cm] bobimg.west) to[out=-150,in=-30] ([xshift=-2.6cm, yshift=-0.5cm] bobimg.west);
+\node at ([xshift=-1.3cm,yshift=-1.15cm] bobimg.west)
+  {\includegraphics[width=0.07\linewidth]{../Resources/Key_mirrored.png}};
+\node at ([xshift=-1.35cm,yshift=-1.4cm] bobimg.west) {{\scriptsize $1$}};
+}
+
+\end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}
 \frametitle{Distributed Function Secret Sharing: Construction}
 \only<1>{
 Construction similar to prior works on Distributed Point Function \cite{doerner2017scaling}. \\
@@ -1108,9 +1278,13 @@ Evaluation result of $x$ is {\color{orange} aggregation of payloads} from root t
 }
 \only<3>{
 For points $x \le \alpha$, Alice wants to learn the exact {\color{orange} aggregation}. \\
-For points $x > \alpha$, Ailce wants to learn {\color{orange} aggregation $\oplus \beta$}.
+For points $x > \alpha$, Alice wants to learn {\color{orange} aggregation $\oplus \beta$}.
 }
-\vspace{15em}
+\only<4>{
+Just need {\color{teal} critical path} and its neighbors. \\
+Alice learns these with Oblivious Transfer.
+}
+\vspace{17em}
 \begin{tikzpicture}[overlay, remember picture]
   % --- Alice image ---
   \node[anchor=north west, xshift=3.0cm, yshift=-2.5cm]
@@ -1184,7 +1358,7 @@ For points $x > \alpha$, Ailce wants to learn {\color{orange} aggregation $\oplu
       (node20r.south) to[out=-140,in=40] node[midway, fill=white, inner sep=1pt] {$\oplus$} (node30r.north);
   }
 
-  \only<3>{
+  \only<1,2,3>{
     % Alice's hollow tree (8 leaves)
     % root
     \rectnodehollow{anode00l}{\rectwidth}{-0.8}{aliceimg};
@@ -1236,19 +1410,121 @@ For points $x > \alpha$, Ailce wants to learn {\color{orange} aggregation $\oplu
     \rectnodehollow{anode37r}{\rectwidth}{0.1}{anode37l};
   }
 
+\only<4>{
+  % Alice's tree with highlighted critical path to the 6th leaf (node32) and neighbors
+  % root
+  \rectnode{anode00l}{brown}{\rectwidth}{-0.8}{aliceimg};
+  \rectnode{anode00r}{orange}{\rectwidth}{0.1}{anode00l};
+
+  % 1st layer (path node + neighbor)
+  \rectnode{anode10l}{brown}{1.5+\rectwidth}{-1.8}{aliceimg}; % on path
+  \rectnode{anode10r}{orange}{\rectwidth}{0.1}{anode10l};
+
+  \rectnode{anode11l}{brown!30}{-1.5+\rectwidth}{-1.8}{aliceimg}; % neighbor
+  \rectnode{anode11r}{orange!30}{\rectwidth}{0.1}{anode11l};
+
+  % 2nd layer (path node + neighbors)
+  \rectnode{anode20l}{brown!30}{2.2+\rectwidth}{-2.8}{aliceimg}; % sibling of path
+  \rectnode{anode20r}{orange!30}{\rectwidth}{0.1}{anode20l};
+
+  \rectnode{anode21l}{brown}{0.8+\rectwidth}{-2.8}{aliceimg}; % on path
+  \rectnode{anode21r}{orange}{\rectwidth}{0.1}{anode21l};
+
+  \rectnode{anode22l}{brown!30}{-0.8+\rectwidth}{-2.8}{aliceimg}; % neighbor
+  \rectnode{anode22r}{orange!30}{\rectwidth}{0.1}{anode22l};
+
+  \rectnodehollow{anode23l}{-2.2+\rectwidth}{-2.8}{aliceimg};
+  \rectnodehollow{anode23r}{\rectwidth}{0.1}{anode23l};
+
+  % 3rd layer (path leaf = 6th leaf, its sibling, others hollow)
+  \rectnodehollow{anode30l}{2.55+\rectwidth}{-3.8}{aliceimg};
+  \rectnodehollow{anode30r}{\rectwidth}{0.1}{anode30l};
+
+  \rectnodehollow{anode31l}{1.85+\rectwidth}{-3.8}{aliceimg};
+  \rectnodehollow{anode31r}{\rectwidth}{0.1}{anode31l};
+
+  \rectnode{anode32l}{brown}{1.15+\rectwidth}{-3.8}{aliceimg}; % 6th leaf seed
+  \rectnode{anode32r}{orange}{\rectwidth}{0.1}{anode32l};      % 6th leaf payload
+
+  \rectnode{anode33l}{brown!30}{0.45+\rectwidth}{-3.8}{aliceimg}; % sibling leaf
+  \rectnode{anode33r}{orange!30}{\rectwidth}{0.1}{anode33l};
+
+  \rectnodehollow{anode34l}{-0.45+\rectwidth}{-3.8}{aliceimg};
+  \rectnodehollow{anode34r}{\rectwidth}{0.1}{anode34l};
+
+  \rectnodehollow{anode35l}{-1.15+\rectwidth}{-3.8}{aliceimg};
+  \rectnodehollow{anode35r}{\rectwidth}{0.1}{anode35l};
+
+  \rectnodehollow{anode36l}{-1.85+\rectwidth}{-3.8}{aliceimg};
+  \rectnodehollow{anode36r}{\rectwidth}{0.1}{anode36l};
+
+  \rectnodehollow{anode37l}{-2.55+\rectwidth}{-3.8}{aliceimg};
+  \rectnodehollow{anode37r}{\rectwidth}{0.1}{anode37l};
+}
+
 \end{tikzpicture}
 
 \end{frame}
 
 \begin{frame}
-\frametitle{Related Works: Fuzzy Private Set Intersection}
+\frametitle{Related Works}
 \textbf{Fuzzy Private Set Intersection}: Techniques based on:
 \begin{itemize}
     \item GC or FHE: \cite{richardson2024fuzzy, son2025doubly, uzun2021fuzzy}.
-    \item Additive Homomorphic Encryption: \cite{van2024fuzzy, gao2024efficient}.
-    \item Symmetric Key Techniques: \cite{zhang2025fast, van2025fuzzy}.
+    \item AHE: \cite{van2024fuzzy, gao2024efficient}.
+    \item Symmetric Key: \cite{zhang2025fast}, \\
+          \quad \quad \cite{van2025fuzzy}.
+\end{itemize}
+\textbf{Structure-Aware Private Set Intersection:}
+\begin{itemize}
+  \item FSS: \cite{garimella2022structure,garimella2024computation}.
+  \item FSS, Malicious: \cite{garimella2023malicious}.
+  \item Still FSS: This work.
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[plain]
+\setbeamercolor{background canvas}{bg=white}
+
+\begin{tikzpicture}[remember picture,overlay]
+
+% ---- MAIN TITLE ----
+\node[anchor=center] at ([yshift=20mm]current page.center) {
+    \begin{minipage}{\linewidth}
+        \centering
+        {\LARGE\bfseries New Framework for Structure-Aware PSI \\[2mm]
+        from Distributed Function Secret Sharing}
+    \end{minipage}
+};
+
+% ---- AUTHORS (no institutions) ----
+\node[anchor=center] at ([yshift=3mm]current page.center) {
+    \begin{minipage}{0.9\linewidth}
+        \centering
+        {\large
+            Dung Bui \quad
+            Gayathri Garimella \quad
+            Peihan Miao \quad
+            Phuoc Pham
+        }
+    \end{minipage}
+};
+
+% ---- CONFERENCE NAME (moved up) ----
+\node[anchor=center] at ([yshift=-12mm]current page.center) {
+    {\large Asiacrypt 2025}
+};
+
+% ---- Links ----
+\node[anchor=center] (paperlink) at ([yshift=-22mm]current page.center) {\small Paper: \texttt{https://eprint.iacr.org/2025/907}};
+\node[anchor=center] (githublink) at ([yshift=-30mm]current page.center) {\small Implementation: \texttt{https://github.com/phuocchubeo123/SaPSI.git}};
+
+% ---- Artifact callout ----
+\node[anchor=west, text=darkgreen] (artifact) at ([xshift=3.2cm,yshift=-1cm]current page.center) {\small Asiacrypt 2025 Artifact!};
+\draw[->, thick, darkgreen] (githublink.east) to[out=10,in=170] (artifact.west);
+
+\end{tikzpicture}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
