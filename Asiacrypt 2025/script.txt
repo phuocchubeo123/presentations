@@ -1,0 +1,67 @@
+Thank you for the introduction. The talk title for today is "New Framework for Structure-Aware PSI from Distributed Function Secret Sharing.
+This is a joint work with Dung Bui from Sorbonne University, Gayathri Garimella was a postdoc at Brown, and Peihan Miao, who is my PhD advisor at Brown. 
+
+Private Set Intersection is a multiparty computation protocol that outputs the intersection of two sets and keeps private the remaining elements.
+
+Recent advances had made private set intersection protocols super scalable, and many applications has been found.
+As a consequence, new practical challenges also arise, which opens the door for new PSI variants.
+
+In some cases, it is impossible for two datasets to have exactly match, but rather only similar enough elements, such as in privacy preserving ride-sharing.
+On the screen, an app is trying to match drivers with passengers, who prefer to keep their locations private.
+The driver cannot hope for a client magically spawns right at where they are waiting, and is willing to pick up a passenger within a particular Manhattan distance radius.
+A simple way to discover the match is to put every point that has a driver potentially available, and run a PSI protocol and find out the matching, but this leads to a huge loss in efficiency, not to mention the fact that it is really hard to do matching afterward.
+
+Inspired by this application, [GRS22] proposes Structure-Aware PSI, to study the scenario when one set contains more points, but in a structured way. 
+More specifically, there are two parties, where the receiver has a large set of points, structured into L infinity balls of diameter delta, and the sender's input is similar to the plain case of PSI.
+A structure-aware PSI protocol would output to the receiver, the set of sender's points included in at least one of these ball.
+The goal is to achieve cost dependent only on the number of balls, instead of the whole dataset size. 
+This would also be the setup in our work today.
+
+At the same period of time, researchers also do the line of work on Fuzzy PSI, with application to biometric search as an example.
+This line of work considers more distance metrics, and mainly uses homomorphic encryption to calculate the distance between elements.
+
+About structure-aware PSI, the first work was introduced at CRYPTO 2022, and got updated to malicious secure a year later.
+Then in 2024, the efficiency moves closer to practice with total multiplicative overhead along with the number of balls just logarithmically dependent on the distant \delta.
+However, an implementation with reasonable efficiency is still missing.
+
+
+In this work, we look at the concrete efficiency of structure-aware PSI protocols, and remove a communication overhead of 100x that occurs in all previous line of work.
+This leads to the first Rust implementation of structure-aware private set intersection.
+We also introduced a new trade-off in the searching algorithm, with more details in the paper, that allows flexibility in different network settings, to choose suitable parameters.
+
+The remaining of this talk would be technical details. 
+Knowledge background on oblivious transfer and function secret sharing would be provided, before we describe how previous works in structure aware psi use these tools, and where the kappa overhead comes from.
+To remove this multiplicative cost, our work uses distributed function secret sharing instead, and we illustrate the construction by the end of this talk.
+
+Starting with Oblivious Transfer or OT, this primitive lets the receiver choose a message from the sender without revealing his choice. 
+We focus on one-out-of-two oblivious transfer, where the sender inputs two messages into the functionality. 
+The receiver, by inputting a choice bit, would learn exactly the corresponding message.
+An OT protocol is secure if the receiver does not gain any information about the other part of the sender’s input, and the sender is kept oblivious to the receiver’s choice.
+OT has become so efficient, with tiny computation overhead and essentially the same communication cost as sending these messages in the clear, with oblivious transfer extension. 
+
+Function Secret Sharing is a primitive that allows, as the name suggests, secret sharing a function. 
+At its core, a function secret sharing scheme for a particular function family has two algorithms, share and eval.
+Share is a randomized algorithm, that takes a function from that family as input, and distributes it into two keys.
+A person with possession of a key, and a value in mind, can run the eval algorithm, which would return a secret share, which looks random, of the true evaluation result.
+A function secret sharing scheme is correct if it does the task, that is given any input, the sum or xor of evaluation with two keys would be exactly the actual result.
+It is said to be secure if each key is simulatable without information about the function itself.
+
+The function family that the structure-aware PSI line of work utilize is distributed comparison function. 
+Each function in this family, in a domain being integers with some bit length u, would be parameterized by an integer alpha in this domain, and a payload r.
+The function checks whether a value is less than or equal to alpha or not.
+The evaluation result would be would be zero if the answer is yes, and would be the same r for every value outside the interval.
+Taking a closer look at the evaluation shares themselves, the evaluation using two keys would be equal if x is in the interval, and different from each other, but still correlated, otherwise. 
+It's immediate to see that this primitive is useful for membership testing, and previous works has shown how to use it in structure-aware private set intersection.
+
+Recall that, in this problem, Alice has an interval, and would receive the points from Bob that happen to be in this interval as well.
+To start the protocol, Alice calls share to generate to keys, k0 and k1.
+Bob would run oblivious transfer as a receiver, to randomly choose one key out of them, which we denote kb.
+Now for each value that Bob has, he runs eval using kb, hash it to break the correlation, then send it back to Alice. 
+Alice, on the other hand, compute eval with k0 and hash it, for every single point in this domain.
+To find out the intersection, Alice outputs the values of which hash is included in the hashes that Bob sends. 
+
+To see the protocol's correctness, we first look at the points that Bob does not have, which would have evaluations completely uncorrelated to the evals that Bob obtains.
+For the values that Bob has, there are now two cases. 
+If it is inside the interval, no matter which key Bob chooses, we have the evaluation to be equal to eval with k0, by the correctness of the function secret sharing scheme. 
+
+
